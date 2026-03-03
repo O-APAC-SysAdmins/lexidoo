@@ -12,7 +12,6 @@
   #:use-module (home fish)
   #:use-module (home packages)
   #:use-module (home services odoo)
-  #:use-module (home ssh)
   #:use-module (ice-9 string-fun))
 
 (home-environment

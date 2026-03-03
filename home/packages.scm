@@ -34,8 +34,6 @@
     ;; --- Coding & Compilers ---
     go
     gopls            
-    guile-3.0
-    guile-lsp-server
     jujutsu      
     zig
     zig-zls          

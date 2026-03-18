@@ -69,37 +69,44 @@
                                          %default-substitute-urls))
                                 (authorized-keys
                                  (append (list (local-file "./nonguix-signing-key.pub"))
-                                         %default-authorized-guix-keys)))))))
+                                         %default-authorized-guix-keys))))
+		     (elogind-service-type config =>
+					   (elogind-configuration
+					     (inherit config)
+					     (idle-action 'ignore)
+					     (handle-lid-switch 'ignore)
+					     (handle-lid-switch-docked 'ignore)
+					     (handle-lid-switch-external-power 'ignore))))))
 
 (define base-desktop
   (operating-system
-   (kernel linux)
-   (firmware (list linux-firmware))
-   (locale "en_HK.utf8")
-   (timezone "Asia/Hong_Kong")
-   (keyboard-layout (keyboard-layout "us"))
-   (host-name "base-desktop")
+    (kernel linux)
+    (firmware (list linux-firmware))
+    (locale "en_HK.utf8")
+    (timezone "Asia/Hong_Kong")
+    (keyboard-layout (keyboard-layout "us"))
+    (host-name "base-desktop")
 
-   (users (cons* (user-account
-                  (name "sibl")
-                  (comment "sibl")
-                  (group "users")
-                  (home-directory "/home/sibl")
-                  (shell (file-append fish "/bin/fish"))
-                  (supplementary-groups '("wheel" "netdev" "audio" "video")))
-                 %base-user-accounts))
+    (users (cons* (user-account
+		    (name "sibl")
+		    (comment "sibl")
+		    (group "users")
+		    (home-directory "/home/sibl")
+		    (shell (file-append fish "/bin/fish"))
+		    (supplementary-groups '("wheel" "netdev" "audio" "video")))
+		  %base-user-accounts))
 
-   (services %my-base-desktop-services)
+    (services %my-base-desktop-services)
 
-   (bootloader 
-    (bootloader-configuration
-     (bootloader grub-efi-removable-bootloader)
-     (targets '("/boot/efi"))))
+    (bootloader 
+      (bootloader-configuration
+	(bootloader grub-efi-removable-bootloader)
+	(targets '("/boot/efi"))))
 
-   (file-systems
-    (cons
-     (file-system
-      (mount-point "/")
-      (device "/dev/vda1")
-      (type "ext4"))
-     %base-file-systems))))
+    (file-systems
+      (cons
+	(file-system
+	  (mount-point "/")
+	  (device "/dev/vda1")
+	  (type "ext4"))
+	%base-file-systems))))

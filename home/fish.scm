@@ -45,13 +45,21 @@
                                         "zoxide init fish | source"
                                         "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
                                         "gpgconf --launch gpg-agent"
-                                        "function fish_greeting; echo 'Hello, there' | cowsay -f small ;end"
-                                        "function fish_prompt
-                                        set -l last_pipestatus $pipestatus
-                                        set -lx __fish_last_status $status # Export for __fish_print_pipestatus.
-                                        set -l prompt_status (__fish_print_pipestatus '[' ']' '|' (set_color red) (set_color red) $last_pipestatus)
-                                        echo -s (set_color purple)'# '(set_color blue)$USER(set_color normal)' @ '(set_color green)$hostname(set_color normal)' in '(set_color yellow)(prompt_pwd --full-length-dirs 2)(set_color normal) (fish_vcs_prompt) ' ' $prompt_status
-                                        echo -n (set_color red)'$ '(set_color normal)
+					                    "if test \"$TERM\" = 'dumb'
+                                                function fish_prompt
+                                                        echo '$ '
+                                                end
+                                                function fish_right_prompt; end
+                                                function fish_greeting; end
+                                        else
+                                                function fish_greeting; echo 'Hello, there' | cowsay -f small ;end
+                                                function fish_prompt
+                                                set -l last_pipestatus $pipestatus
+                                                set -lx __fish_last_status $status # Export for __fish_print_pipestatus.
+                                                set -l prompt_status (__fish_print_pipestatus '[' ']' '|' (set_color red) (set_color red) $last_pipestatus)
+                                                echo -s (set_color purple)'# '(set_color blue)$USER(set_color normal)' @ '(set_color green)$hostname(set_color normal)' in '(set_color yellow)(prompt_pwd --full-length-dirs 2)(set_color normal) (fish_vcs_prompt) ' ' $prompt_status
+                                                echo -n (set_color red)'$ '(set_color normal)
+                                                end
                                         end"
                                         "fish_config theme choose None")
                                   "\n")))))))

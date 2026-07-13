@@ -22,5 +22,5 @@
    (service home-shepherd-service-type
             (home-shepherd-configuration
              (services 
-              (list odoo-filebrowser-service odoo-jellyfin-service))))
+              (list odoo-filebrowser-service odoo-jellyfin-service odoo-dig-service))))
    %base-home-services)))

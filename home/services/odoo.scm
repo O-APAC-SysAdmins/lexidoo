@@ -3,7 +3,7 @@
   #:use-module (gnu services)
   #:use-module (gnu services shepherd)
   #:use-module (guix gexp)
-  #:export (odoo-filebrowser-service odoo-jellyfin-service))
+  #:export (odoo-filebrowser-service odoo-jellyfin-service odoo-dig-service))
 
 (define odoo-filebrowser-service
   (shepherd-service
@@ -23,4 +23,16 @@
              '("podman" "run" "--replace" "--name" "jellyfin" "-v" "jellyfin-config:/config" "-v" "jellyfin-cache:/cache" "--mount" "type=bind,source=/home/sibl/Public,target=/media" "--restart=unless-stopped" "-p" "8888:8096" "--device=/dev/dri:/dev/dri" "jellyfin/jellyfin")
              #:log-file (string-append (getenv "HOME")
                                        "/log/jellyfin.log")))
+   (stop #~(make-kill-destructor))))
+
+(define odoo-dig-service
+  (shepherd-service
+   (documentation "Run Dig Browser.")
+   (provision '(odoo-dig))
+   (start #~(make-forkexec-constructor
+	     '("./dig.raku")
+	     #:directory (string-append (getenv "HOME")
+					"/containers_data/web-dig-mx")
+             #:log-file (string-append (getenv "HOME")
+                                       "/log/dig-browser.log")))
    (stop #~(make-kill-destructor))))
